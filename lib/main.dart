@@ -22,7 +22,7 @@ void main() async {
   );
 }
 
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
   final AdaptiveThemeMode? savedThemeMode;
   final bool presentation;
 
@@ -33,17 +33,24 @@ class Main extends StatelessWidget {
   });
 
   @override
+  State<StatefulWidget> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
         light: ThemeData(
+          brightness: Brightness.light,
           colorSchemeSeed: Themes.colors[Themes.defaultIndex],
           useMaterial3: true,
         ),
         dark: ThemeData(
+          brightness: Brightness.dark,
           colorSchemeSeed: Themes.colors[Themes.defaultIndex],
           useMaterial3: true,
         ),
-        initial: savedThemeMode ?? AdaptiveThemeMode.light,
+        initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
         builder: (theme, darkTheme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Themes {
-  static int defaultIndex = 8;
+  static int defaultIndex = 0;
   static List<Color> colors = [
     Colors.red,
     Colors.pink,
@@ -21,11 +21,11 @@ class Themes {
     Colors.blueGrey
   ];
 
-  static ThemeData changeTheme(int index) {
+  static ThemeData changeTheme(int index, bool brightness) {
     return ThemeData(
       colorSchemeSeed: colors[index],
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: brightness ? Brightness.dark : Brightness.light,
     );
   }
 }
