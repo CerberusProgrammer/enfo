@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:enfo/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:local_notifier/local_notifier.dart';
 
 import 'clock.dart';
 
@@ -15,19 +16,18 @@ class Home extends StatefulWidget {
 class _Home extends State<Home> {
   final CountDownController _controller = CountDownController();
   bool _mode = false;
-  int time = 3000;
+  int time = 1500;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
-        body: _mode
-            ? Center()
-            : Clock(
-                controller: _controller,
-                time: time,
-              ),
+        body: Clock(
+          controller: _controller,
+          time: time,
+          alarm: false,
+        ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(3.0),
           child: Row(
@@ -52,6 +52,21 @@ class _Home extends State<Home> {
                   Icons.settings,
                 ),
               ),
+              IconButton(
+                  onPressed: () async {
+                    await localNotifier.setup(
+                      appName: 'enfo',
+                      shortcutPolicy: ShortcutPolicy.requireCreate,
+                    );
+
+                    LocalNotification notification = LocalNotification(
+                      title: "local_notifier_example",
+                      body: "hello flutter!",
+                    );
+
+                    notification.show();
+                  },
+                  icon: const Icon(Icons.notification_add)),
               const Spacer(),
               Icon(_mode ? Icons.edit : Icons.remove_red_eye),
               Switch(

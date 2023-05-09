@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:local_notifier/local_notifier.dart';
 
 class Clock extends StatefulWidget {
   final CountDownController controller;
   final int time;
+  final bool alarm;
 
   const Clock({
     super.key,
     required this.controller,
     required this.time,
+    required this.alarm,
   });
 
   @override
@@ -16,7 +21,8 @@ class Clock extends StatefulWidget {
 }
 
 class _ClockState extends State<Clock> {
-  bool isTimer = false;
+  bool rest = false;
+  int time = 1500;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +38,21 @@ class _ClockState extends State<Clock> {
                   if (widget.controller.isPaused) {
                     widget.controller.resume();
                   } else {
-                    widget.controller.pause();
+                    setState(() {
+                      widget.controller.pause();
+                    });
                   }
                 } else {
                   widget.controller.start();
                 }
               },
               onLongPress: () {
-                widget.controller.restart();
+                setState(() {
+                  widget.controller.reset();
+                });
               },
               child: CircularCountDownTimer(
-                duration: widget.time,
+                duration: time,
                 initialDuration: 0,
                 controller: widget.controller,
                 width: constraints.maxWidth / 1.2,
@@ -65,22 +75,40 @@ class _ClockState extends State<Clock> {
                 isReverseAnimation: false,
                 isTimerTextShown: true,
                 autoStart: false,
-                onStart: () {
-                  setState(() {
-                    isTimer = true;
-                  });
+                onStart: () {},
+                onComplete: () {
+                  if (Platform.isWindows) {
+                    print('windows');
+                  } else if (Platform.isAndroid) {
+                    print('android');
+                  }
+
+                  if (rest) {
+                    rest = false;
+                    setState(() {
+                      time = 25 * 60;
+                      widget.controller.restart(duration: time);
+                      widget.controller.pause();
+                    });
+                  } else {
+                    rest = true;
+                    setState(() {
+                      time = 5 * 60;
+                      widget.controller.restart(duration: time);
+                      widget.controller.pause();
+                    });
+                  }
                 },
-                onComplete: () {},
                 onChange: (String timeStamp) {},
                 timeFormatterFunction: (defaultFormatterFunction, duration) {
-                  if (!widget.controller.isStarted) {
-                    return "Start";
-                  } else {
-                    return Function.apply(
-                      defaultFormatterFunction,
-                      [duration],
-                    );
+                  if (widget.controller.isPaused) {
+                    return 'Paused';
                   }
+
+                  return Function.apply(
+                    defaultFormatterFunction,
+                    [duration],
+                  );
                 },
               ),
             ),
