@@ -17,6 +17,8 @@ dependencies:
   adaptive_theme: ^3.2.1
   shared_preferences: ^2.1.1
   local_notifier: ^0.1.5
+  window_manager: ^0.3.2
+  flutter_local_notifications: ^14.0.0+1
 
 dev_dependencies:
   flutter_test:

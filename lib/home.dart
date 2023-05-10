@@ -53,20 +53,7 @@ class _Home extends State<Home> {
                 ),
               ),
               IconButton(
-                  onPressed: () async {
-                    await localNotifier.setup(
-                      appName: 'enfo',
-                      shortcutPolicy: ShortcutPolicy.requireCreate,
-                    );
-
-                    LocalNotification notification = LocalNotification(
-                      title: "local_notifier_example",
-                      body: "hello flutter!",
-                    );
-
-                    notification.show();
-                  },
-                  icon: const Icon(Icons.notification_add)),
+                  onPressed: () {}, icon: const Icon(Icons.notification_add)),
               const Spacer(),
               Icon(_mode ? Icons.edit : Icons.remove_red_eye),
               Switch(
