@@ -32,6 +32,7 @@ void main() async {
       size: Size(800, 800),
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
+      center: true,
       title: 'Enfo',
       titleBarStyle: TitleBarStyle.hidden,
       minimumSize: Size(310, 280),

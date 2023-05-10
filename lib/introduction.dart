@@ -17,7 +17,6 @@ class Introduction extends StatefulWidget {
 
 class _IntroductionState extends State<Introduction> {
   bool _showDescription = false;
-  bool _done = false;
 
   @override
   void initState() {
@@ -30,6 +29,7 @@ class _IntroductionState extends State<Introduction> {
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
+      isProgress: false,
       pages: [
         PageViewModel(
           titleWidget: AnimatedTextKit(
@@ -64,11 +64,15 @@ class _IntroductionState extends State<Introduction> {
                       speed: const Duration(milliseconds: 70),
                     ),
                   ],
-                  onFinished: () {
+                  onFinished: () async {
                     if (Platform.isWindows) {
                       windowManager.setAlwaysOnTop(false);
                     }
 
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('presentation', false);
+
+                    // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
                       PageRouteBuilder(
@@ -96,23 +100,7 @@ class _IntroductionState extends State<Introduction> {
       ],
       showDoneButton: false,
       showNextButton: false,
-      done: const Text("Done"),
-      onDone: () async {
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setBool('presentation', false);
-        // ignore: use_build_context_synchronously
-        _onIntroEnd(context);
-      },
-    );
-  }
-
-  void _onIntroEnd(context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => const Home(
-          presentation: false,
-        ),
-      ),
+      onDone: () {},
     );
   }
 }

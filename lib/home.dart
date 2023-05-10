@@ -33,22 +33,24 @@ class _Home extends State<Home> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(
-          title: 'Enfo',
-          onMinimize: () async {
-            await windowManager.minimize();
-          },
-          onMaximize: () async {
-            if (await windowManager.isMaximized()) {
-              await windowManager.unmaximize();
-            } else {
-              await windowManager.maximize();
-            }
-          },
-          onClose: () async {
-            await windowManager.close();
-          },
-        ),
+        appBar: Platform.isWindows
+            ? CustomAppBar(
+                title: widget.presentation ? '' : 'Enfo',
+                onMinimize: () async {
+                  await windowManager.minimize();
+                },
+                onMaximize: () async {
+                  if (await windowManager.isMaximized()) {
+                    await windowManager.unmaximize();
+                  } else {
+                    await windowManager.maximize();
+                  }
+                },
+                onClose: () async {
+                  await windowManager.close();
+                },
+              )
+            : null,
         body: widget.presentation
             ? const Introduction()
             : Clock(

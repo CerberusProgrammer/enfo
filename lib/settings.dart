@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:enfo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   final bool theme;
@@ -121,6 +124,28 @@ class _SettingsState extends State<Settings> {
                         });
                   },
                   child: null,
+                ),
+              ),
+              ListTile(
+                title: const Text('Buy me a coffee'),
+                trailing: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    color: Theme.of(context).colorScheme.primary,
+                    icon: const Icon(Icons.coffee),
+                    onPressed: () async {
+                      if (Platform.isWindows) {
+                        const url = 'https://flutter.io';
+
+                        final uri = Uri.parse(url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      }
+                    },
+                  ),
                 ),
               ),
             ],
