@@ -9,15 +9,15 @@ import 'package:window_manager/window_manager.dart';
 class Clock extends StatefulWidget {
   final CountDownController controller;
   final int time;
-  final bool alarm;
   final bool notification;
+  final bool mode;
 
   const Clock({
     super.key,
     required this.controller,
     required this.time,
-    required this.alarm,
     required this.notification,
+    required this.mode,
   });
 
   @override
@@ -73,7 +73,9 @@ class _ClockState extends State<Clock> {
                 strokeWidth: 100.0,
                 strokeCap: StrokeCap.butt,
                 textStyle: TextStyle(
-                  fontSize: constraints.maxWidth < 300 ? 18 : 33.0,
+                  fontSize: constraints.maxWidth > constraints.maxHeight
+                      ? constraints.maxHeight / 6
+                      : constraints.maxWidth / 6,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
@@ -136,6 +138,13 @@ class _ClockState extends State<Clock> {
                     return 'Paused';
                   }
 
+                  if (widget.mode) {
+                    if (rest) {
+                      return 'Relax';
+                    }
+                    return 'Focus';
+                  }
+
                   return Function.apply(
                     defaultFormatterFunction,
                     [duration],
@@ -171,7 +180,7 @@ class _ClockState extends State<Clock> {
       priority: Priority.high,
       showWhen: false,
       sound: RawResourceAndroidNotificationSound(
-        'calm_alarm',
+        'minimal_alarm',
       ),
     );
 
@@ -199,6 +208,7 @@ class _ClockState extends State<Clock> {
     LocalNotification notification = LocalNotification(
       title: title,
       body: body,
+      silent: true,
     );
 
     notification.show();

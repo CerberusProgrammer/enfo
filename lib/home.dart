@@ -18,17 +18,14 @@ class _Home extends State<Home> {
   int time = 1500;
   bool notifications = true;
 
-  bool alarm = true;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
         body: Clock(
           controller: _controller,
+          mode: _mode,
           time: time,
-          alarm: false,
           notification: notifications,
         ),
         bottomNavigationBar: Padding(
@@ -75,24 +72,10 @@ class _Home extends State<Home> {
                       : Icons.notifications_off_outlined,
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  if (alarm) {
-                    setState(() {
-                      alarm = false;
-                    });
-                  } else {
-                    setState(() {
-                      alarm = true;
-                    });
-                  }
-                },
-                icon: Icon(
-                  alarm ? Icons.music_note : Icons.music_off,
-                ),
-              ),
               const Spacer(),
-              Icon(_mode ? Icons.edit : Icons.remove_red_eye),
+              Icon(
+                _mode ? Icons.title : Icons.access_time,
+              ),
               Switch(
                 value: _mode,
                 onChanged: (value) {
