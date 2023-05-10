@@ -10,12 +10,14 @@ class Clock extends StatefulWidget {
   final CountDownController controller;
   final int time;
   final bool alarm;
+  final bool notification;
 
   const Clock({
     super.key,
     required this.controller,
     required this.time,
     required this.alarm,
+    required this.notification,
   });
 
   @override
@@ -28,45 +30,6 @@ class _ClockState extends State<Clock> {
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  void notifyDesktop({
-    String title = "",
-    String body = "",
-  }) async {
-    await localNotifier.setup(
-      appName: 'enfo',
-      shortcutPolicy: ShortcutPolicy.requireCreate,
-    );
-
-    LocalNotification notification = LocalNotification(
-      title: title,
-      body: body,
-    );
-
-    notification.show();
-    await WindowManager.instance.show();
-  }
-
-  void showNotification() async {
-    // Inicializa el plugin para Android
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-    // Muestra la notificación
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('your_channel_id', 'your_channel_name',
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: false);
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'titulo', 'cuerpo', platformChannelSpecifics,
-        payload: 'item x');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,13 +87,18 @@ class _ClockState extends State<Clock> {
                   if (rest) {
                     rest = false;
 
-                    if (Platform.isWindows || Platform.isLinux) {
-                      notifyDesktop(
-                        title: "Time to work",
-                        body: "Let's continue with the work!",
-                      );
-                    } else if (Platform.isAndroid) {
-                      print('android');
+                    if (widget.notification) {
+                      if (Platform.isWindows || Platform.isLinux) {
+                        notifyDesktop(
+                          title: "Time to work",
+                          body: "Let's continue with the work!",
+                        );
+                      } else if (Platform.isAndroid) {
+                        showNotification(
+                          title: "Time to work",
+                          body: "Let's continue with the work!",
+                        );
+                      }
                     }
 
                     setState(() {
@@ -141,13 +109,18 @@ class _ClockState extends State<Clock> {
                   } else {
                     rest = true;
 
-                    if (Platform.isWindows || Platform.isLinux) {
-                      notifyDesktop(
-                        title: "Time to rest",
-                        body: "Take a break.",
-                      );
-                    } else if (Platform.isAndroid) {
-                      print('android');
+                    if (widget.notification) {
+                      if (Platform.isWindows || Platform.isLinux) {
+                        notifyDesktop(
+                          title: "Time to rest",
+                          body: "Take a break.",
+                        );
+                      } else if (Platform.isAndroid) {
+                        showNotification(
+                          title: "Time to rest",
+                          body: "Take a break.",
+                        );
+                      }
                     }
 
                     setState(() {
@@ -174,5 +147,61 @@ class _ClockState extends State<Clock> {
         );
       }),
     );
+  }
+
+  void showNotification({
+    String title = "",
+    String body = "",
+  }) async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('icon');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      '0',
+      'enfo',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+      sound: RawResourceAndroidNotificationSound(
+        'calm_alarm',
+      ),
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
+  }
+
+  void notifyDesktop({
+    String title = "",
+    String body = "",
+  }) async {
+    await localNotifier.setup(
+      appName: 'enfo',
+      shortcutPolicy: ShortcutPolicy.requireCreate,
+    );
+
+    LocalNotification notification = LocalNotification(
+      title: title,
+      body: body,
+    );
+
+    notification.show();
+    await WindowManager.instance.show();
   }
 }

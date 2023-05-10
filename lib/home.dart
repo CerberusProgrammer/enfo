@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:enfo/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:local_notifier/local_notifier.dart';
 
 import 'clock.dart';
 
@@ -17,6 +16,9 @@ class _Home extends State<Home> {
   final CountDownController _controller = CountDownController();
   bool _mode = false;
   int time = 1500;
+  bool notifications = true;
+
+  bool alarm = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class _Home extends State<Home> {
           controller: _controller,
           time: time,
           alarm: false,
+          notification: notifications,
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(3.0),
@@ -45,7 +48,9 @@ class _Home extends State<Home> {
                   showModalBottomSheet(
                       context: context,
                       builder: (builder) {
-                        return Settings(theme: theme);
+                        return Settings(
+                          theme: theme,
+                        );
                       });
                 },
                 icon: const Icon(
@@ -53,7 +58,39 @@ class _Home extends State<Home> {
                 ),
               ),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.notification_add)),
+                onPressed: () {
+                  if (notifications) {
+                    setState(() {
+                      notifications = false;
+                    });
+                  } else {
+                    setState(() {
+                      notifications = true;
+                    });
+                  }
+                },
+                icon: Icon(
+                  notifications
+                      ? Icons.notifications
+                      : Icons.notifications_off_outlined,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  if (alarm) {
+                    setState(() {
+                      alarm = false;
+                    });
+                  } else {
+                    setState(() {
+                      alarm = true;
+                    });
+                  }
+                },
+                icon: Icon(
+                  alarm ? Icons.music_note : Icons.music_off,
+                ),
+              ),
               const Spacer(),
               Icon(_mode ? Icons.edit : Icons.remove_red_eye),
               Switch(
