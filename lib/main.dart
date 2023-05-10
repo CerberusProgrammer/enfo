@@ -29,7 +29,7 @@ void main() async {
     await windowManager.ensureInitialized();
 
     const WindowOptions windowOptions = WindowOptions(
-      size: Size(400, 400),
+      size: Size(800, 800),
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
       title: 'Enfo',
