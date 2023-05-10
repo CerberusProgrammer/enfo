@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:enfo/introduction.dart';
 import 'package:enfo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'home.dart';
 
@@ -20,6 +24,23 @@ void main() async {
       presentation: presentation,
     ),
   );
+
+  if (Platform.isWindows) {
+    await windowManager.ensureInitialized();
+
+    const WindowOptions windowOptions = WindowOptions(
+      size: Size(400, 400),
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      title: 'Enfo',
+      titleBarStyle: TitleBarStyle.hidden,
+      minimumSize: Size(250, 250),
+    );
+
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+    });
+  }
 }
 
 class Main extends StatefulWidget {
@@ -57,7 +78,9 @@ class _MainState extends State<Main> {
             title: "enfo",
             theme: theme,
             darkTheme: darkTheme,
-            home: const Home(),
+            home: Home(
+              presentation: true,
+            ),
           );
         });
   }
