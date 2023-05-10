@@ -15,7 +15,7 @@ void main() async {
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   final prefs = await SharedPreferences.getInstance();
 
-  Themes.defaultIndex = prefs.getInt('defaultIndex') ?? 8;
+  Themes.defaultIndex = prefs.getInt('defaultIndex') ?? 10;
   bool presentation = prefs.getBool('presentation') ?? true;
 
   runApp(
@@ -34,7 +34,7 @@ void main() async {
       skipTaskbar: false,
       title: 'Enfo',
       titleBarStyle: TitleBarStyle.hidden,
-      minimumSize: Size(250, 250),
+      minimumSize: Size(310, 280),
     );
 
     windowManager.waitUntilReadyToShow(windowOptions, () async {
