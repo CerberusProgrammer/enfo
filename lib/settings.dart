@@ -135,7 +135,7 @@ class _SettingsState extends State<Settings> {
                     icon: const Icon(Icons.coffee),
                     onPressed: () async {
                       if (Platform.isWindows) {
-                        const url = 'https://flutter.io';
+                        const url = 'https://www.buymeacoffee.com/sazarcode';
 
                         final uri = Uri.parse(url);
                         if (await canLaunchUrl(uri)) {
@@ -144,6 +144,19 @@ class _SettingsState extends State<Settings> {
                           throw 'Could not launch $url';
                         }
                       }
+                    },
+                  ),
+                ),
+              ),
+              ListTile(
+                title: const Text('Watch an ad to help'),
+                trailing: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    color: Theme.of(context).colorScheme.primary,
+                    icon: const Icon(Icons.attach_money),
+                    onPressed: () async {
+                      if (Platform.isWindows) {}
                     },
                   ),
                 ),
