@@ -80,7 +80,7 @@ class _MainState extends State<Main> {
         builder: (theme, darkTheme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: "enfo",
+            title: "Enfo",
             theme: theme,
             darkTheme: darkTheme,
             home: Home(
