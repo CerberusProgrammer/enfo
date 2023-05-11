@@ -80,7 +80,7 @@ class _MainState extends State<Main> {
             theme: theme,
             darkTheme: darkTheme,
             home: Home(
-              presentation: false,
+              presentation: true,
             ),
           );
         });
