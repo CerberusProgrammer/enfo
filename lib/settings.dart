@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:enfo/secret.dart';
 import 'package:enfo/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,17 +21,37 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   late bool _theme;
+  InterstitialAd? _interstitialAd;
 
   @override
   void initState() {
-    _theme = widget.theme;
     super.initState();
+    _theme = widget.theme;
+    _createInterstitialAd();
+  }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: admob_id,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) => _interstitialAd = ad,
+        onAdFailedToLoad: (error) =>
+            print('Failed to load interstitial ad: $error'),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _interstitialAd?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 160,
+      height: 170,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -136,10 +158,22 @@ class _SettingsState extends State<Settings> {
                     onPressed: () async {
                       if (Platform.isWindows) {
                         const url = 'https://www.buymeacoffee.com/sazarcode';
-
                         final uri = Uri.parse(url);
+
                         if (await canLaunchUrl(uri)) {
                           await launchUrl(uri);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      } else if (Platform.isAndroid) {
+                        const url = 'https://www.buymeacoffee.com/sazarcode';
+                        final uri = Uri.parse(url);
+
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
                         } else {
                           throw 'Could not launch $url';
                         }
@@ -156,7 +190,31 @@ class _SettingsState extends State<Settings> {
                     color: Theme.of(context).colorScheme.primary,
                     icon: const Icon(Icons.attach_money),
                     onPressed: () async {
-                      if (Platform.isWindows) {}
+                      if (Platform.isWindows) {
+                      } else if (Platform.isAndroid) {
+                        if (_interstitialAd == null) {
+                          print(
+                              'Warning: attempt to show interstitial before loaded.');
+                          return;
+                        }
+                        _interstitialAd!.fullScreenContentCallback =
+                            FullScreenContentCallback(
+                          onAdShowedFullScreenContent: (ad) =>
+                              print('$ad onAdShowedFullScreenContent.'),
+                          onAdDismissedFullScreenContent: (ad) {
+                            print('$ad onAdDismissedFullScreenContent.');
+                            ad.dispose();
+                            _createInterstitialAd();
+                          },
+                          onAdFailedToShowFullScreenContent: (ad, error) {
+                            print(
+                                '$ad onAdFailedToShowFullScreenContent: $error');
+                            ad.dispose();
+                            _createInterstitialAd();
+                          },
+                        );
+                        _interstitialAd!.show();
+                      }
                     },
                   ),
                 ),

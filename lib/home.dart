@@ -31,122 +31,118 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: Platform.isWindows
-            ? CustomAppBar(
-                title: widget.presentation ? '' : 'Enfo',
-                onMinimize: () async {
-                  await windowManager.minimize();
-                },
-                onMaximize: () async {
-                  if (await windowManager.isMaximized()) {
-                    await windowManager.unmaximize();
-                  } else {
-                    await windowManager.maximize();
-                  }
-                },
-                onClose: () async {
-                  await windowManager.close();
-                },
-              )
-            : null,
-        body: widget.presentation
-            ? const Introduction()
-            : Clock(
-                controller: _controller,
-                mode: _mode,
-                time: time,
-                notification: notifications,
-              ),
-        bottomNavigationBar: widget.presentation
-            ? null
-            : Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () async {
-                        bool theme = false;
-                        theme = await AdaptiveTheme.getThemeMode().then(
-                          (value) {
-                            return value!.isDark;
-                          },
-                        );
+    return Scaffold(
+      appBar: Platform.isWindows
+          ? CustomAppBar(
+              title: widget.presentation ? '' : 'Enfo',
+              onMinimize: () async {
+                await windowManager.minimize();
+              },
+              onMaximize: () async {
+                if (await windowManager.isMaximized()) {
+                  await windowManager.unmaximize();
+                } else {
+                  await windowManager.maximize();
+                }
+              },
+              onClose: () async {
+                await windowManager.close();
+              },
+            )
+          : null,
+      body: widget.presentation
+          ? const Introduction()
+          : Clock(
+              controller: _controller,
+              mode: _mode,
+              time: time,
+              notification: notifications,
+            ),
+      bottomNavigationBar: widget.presentation
+          ? null
+          : Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      bool theme = false;
+                      theme = await AdaptiveTheme.getThemeMode().then(
+                        (value) {
+                          return value!.isDark;
+                        },
+                      );
 
-                        // ignore: use_build_context_synchronously
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (builder) {
-                              return Settings(
-                                theme: theme,
-                              );
-                            });
-                      },
-                      icon: const Icon(
-                        Icons.settings,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        if (notifications) {
-                          setState(() {
-                            notifications = false;
+                      // ignore: use_build_context_synchronously
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (builder) {
+                            return Settings(
+                              theme: theme,
+                            );
                           });
-                        } else {
-                          setState(() {
-                            notifications = true;
-                          });
-                        }
-                      },
-                      icon: Icon(
-                        notifications
-                            ? Icons.notifications
-                            : Icons.notifications_off_outlined,
-                      ),
+                    },
+                    icon: const Icon(
+                      Icons.settings,
                     ),
-                    Platform.isWindows
-                        ? IconButton(
-                            onPressed: () async {
-                              if (_pinned) {
-                                setState(() {
-                                  _pinned = false;
-                                });
-                                await windowManager.setAlwaysOnTop(false);
-                              } else {
-                                setState(() {
-                                  _pinned = true;
-                                });
-                                await windowManager.setAlwaysOnTop(true);
-                              }
-                            },
-                            color: _pinned
-                                ? Theme.of(context).colorScheme.primary
-                                : null,
-                            icon: Icon(
-                              _pinned
-                                  ? Icons.push_pin
-                                  : Icons.push_pin_outlined,
-                              size: 24,
-                            ),
-                          )
-                        : const Center(),
-                    const Spacer(),
-                    Icon(
-                      _mode ? Icons.title : Icons.access_time,
-                    ),
-                    Switch(
-                      value: _mode,
-                      onChanged: (value) {
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (notifications) {
                         setState(() {
-                          _mode = value;
+                          notifications = false;
                         });
-                      },
+                      } else {
+                        setState(() {
+                          notifications = true;
+                        });
+                      }
+                    },
+                    icon: Icon(
+                      notifications
+                          ? Icons.notifications
+                          : Icons.notifications_off_outlined,
                     ),
-                  ],
-                ),
+                  ),
+                  Platform.isWindows
+                      ? IconButton(
+                          onPressed: () async {
+                            if (_pinned) {
+                              setState(() {
+                                _pinned = false;
+                              });
+                              await windowManager.setAlwaysOnTop(false);
+                            } else {
+                              setState(() {
+                                _pinned = true;
+                              });
+                              await windowManager.setAlwaysOnTop(true);
+                            }
+                          },
+                          color: _pinned
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                          icon: Icon(
+                            _pinned ? Icons.push_pin : Icons.push_pin_outlined,
+                            size: 24,
+                          ),
+                        )
+                      : const Text(''),
+                  const Spacer(),
+                  Icon(
+                    _mode ? Icons.title : Icons.access_time,
+                  ),
+                  Switch(
+                    value: _mode,
+                    onChanged: (value) {
+                      setState(() {
+                        _mode = value;
+                      });
+                    },
+                  ),
+                ],
               ),
-      ),
+            ),
     );
   }
 }

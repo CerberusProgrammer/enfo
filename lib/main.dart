@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:enfo/introduction.dart';
 import 'package:enfo/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -14,6 +14,7 @@ void main() async {
 
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   final prefs = await SharedPreferences.getInstance();
+  MobileAds.instance.initialize();
 
   Themes.defaultIndex = prefs.getInt('defaultIndex') ?? 10;
   bool presentation = prefs.getBool('presentation') ?? true;
@@ -79,8 +80,8 @@ class _MainState extends State<Main> {
             title: "enfo",
             theme: theme,
             darkTheme: darkTheme,
-            home: Home(
-              presentation: true,
+            home: const Home(
+              presentation: false,
             ),
           );
         });

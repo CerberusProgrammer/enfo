@@ -24,6 +24,7 @@ dependencies:
   introduction_screen: ^3.1.8
   font_awesome_flutter: ^10.4.0
   url_launcher: ^6.1.11
+  google_mobile_ads: ^3.0.0
 
 dev_dependencies:
   flutter_test:
