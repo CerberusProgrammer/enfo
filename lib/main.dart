@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:enfo/theme.dart';
 import 'package:enfo/web/home_web.dart';
+import 'package:enfo/web/introduction_web.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,7 +77,7 @@ void main() async {
             title: "Enfo",
             theme: theme,
             darkTheme: darkTheme,
-            home: const HomeWeb(),
+            home: presentation ? const IntroductionWeb() : const HomeWeb(),
           );
         }));
   }
