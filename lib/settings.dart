@@ -31,15 +31,17 @@ class _SettingsState extends State<Settings> {
   }
 
   void _createInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: admob_id,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) => _interstitialAd = ad,
-        onAdFailedToLoad: (error) =>
-            print('Failed to load interstitial ad: $error'),
-      ),
-    );
+    if (Platform.isAndroid) {
+      InterstitialAd.load(
+        adUnitId: admob_id,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) => _interstitialAd = ad,
+          onAdFailedToLoad: (error) =>
+              print('Failed to load interstitial ad: $error'),
+        ),
+      );
+    }
   }
 
   @override
@@ -51,7 +53,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 170,
+      height: 155,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -182,43 +184,42 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
               ),
-              ListTile(
-                title: const Text('Watch an ad to help'),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: IconButton(
-                    color: Theme.of(context).colorScheme.primary,
-                    icon: const Icon(Icons.attach_money),
-                    onPressed: () async {
-                      if (Platform.isWindows) {
-                      } else if (Platform.isAndroid) {
-                        if (_interstitialAd == null) {
-                          print(
-                              'Warning: attempt to show interstitial before loaded.');
-                          return;
-                        }
-                        _interstitialAd!.fullScreenContentCallback =
-                            FullScreenContentCallback(
-                          onAdShowedFullScreenContent: (ad) =>
-                              print('$ad onAdShowedFullScreenContent.'),
-                          onAdDismissedFullScreenContent: (ad) {
-                            print('$ad onAdDismissedFullScreenContent.');
-                            ad.dispose();
-                            _createInterstitialAd();
+              Platform.isAndroid
+                  ? ListTile(
+                      title: const Text('Watch an ad to help'),
+                      trailing: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: IconButton(
+                          color: Theme.of(context).colorScheme.primary,
+                          icon: const Icon(Icons.attach_money),
+                          onPressed: () async {
+                            if (_interstitialAd == null) {
+                              print(
+                                  'Warning: attempt to show interstitial before loaded.');
+                              return;
+                            }
+                            _interstitialAd!.fullScreenContentCallback =
+                                FullScreenContentCallback(
+                              onAdShowedFullScreenContent: (ad) =>
+                                  print('$ad onAdShowedFullScreenContent.'),
+                              onAdDismissedFullScreenContent: (ad) {
+                                print('$ad onAdDismissedFullScreenContent.');
+                                ad.dispose();
+                                _createInterstitialAd();
+                              },
+                              onAdFailedToShowFullScreenContent: (ad, error) {
+                                print(
+                                    '$ad onAdFailedToShowFullScreenContent: $error');
+                                ad.dispose();
+                                _createInterstitialAd();
+                              },
+                            );
+                            _interstitialAd!.show();
                           },
-                          onAdFailedToShowFullScreenContent: (ad, error) {
-                            print(
-                                '$ad onAdFailedToShowFullScreenContent: $error');
-                            ad.dispose();
-                            _createInterstitialAd();
-                          },
-                        );
-                        _interstitialAd!.show();
-                      }
-                    },
-                  ),
-                ),
-              ),
+                        ),
+                      ),
+                    )
+                  : const Center(),
             ],
           ),
         ),

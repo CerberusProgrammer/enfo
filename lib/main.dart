@@ -14,10 +14,13 @@ void main() async {
 
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   final prefs = await SharedPreferences.getInstance();
-  MobileAds.instance.initialize();
 
   Themes.defaultIndex = prefs.getInt('defaultIndex') ?? 10;
   bool presentation = prefs.getBool('presentation') ?? true;
+
+  if (Platform.isAndroid) {
+    MobileAds.instance.initialize();
+  }
 
   runApp(
     Main(
@@ -80,8 +83,8 @@ class _MainState extends State<Main> {
             title: "enfo",
             theme: theme,
             darkTheme: darkTheme,
-            home: const Home(
-              presentation: false,
+            home: Home(
+              presentation: widget.presentation,
             ),
           );
         });

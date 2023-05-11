@@ -9,10 +9,17 @@
     </queries>
 
 
+
    <application
         android:label="enfo"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        >
+        
+         <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-1234567890123456~9876543210"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
