@@ -7,6 +7,9 @@ import 'dart:html' as web;
 import 'clock_web.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:ui' as ui;
+
 class HomeWeb extends StatefulWidget {
   const HomeWeb({super.key});
 
@@ -20,6 +23,26 @@ class _HomeWeb extends State<HomeWeb> {
   int time = 1500;
   bool notifications = false;
   String permission = "";
+
+  Widget adsenseAdsView() {
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+      'adViewType',
+      (int viewID) => web.IFrameElement()
+        ..width = '320'
+        ..height = '100'
+        ..src = 'adview.html'
+        ..style.border = 'none',
+    );
+
+    return const SizedBox(
+      height: 100.0,
+      width: 320.0,
+      child: HtmlElementView(
+        viewType: 'adViewType',
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
