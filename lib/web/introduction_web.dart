@@ -51,6 +51,14 @@ class _IntroductionState extends State<IntroductionWeb> {
                       ),
                       speed: const Duration(milliseconds: 70),
                     ),
+                    TyperAnimatedText(
+                      'Enfo is based on the Pomodoro system. \n\n Work for 25 minutes and rest for 5 minutes.',
+                      textAlign: TextAlign.center,
+                      textStyle: const TextStyle(
+                        fontSize: 32,
+                      ),
+                      speed: const Duration(milliseconds: 70),
+                    ),
                   ],
                   onFinished: () async {
                     final prefs = await SharedPreferences.getInstance();
