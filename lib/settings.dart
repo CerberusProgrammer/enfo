@@ -194,8 +194,6 @@ class _SettingsState extends State<Settings> {
                           icon: const Icon(Icons.attach_money),
                           onPressed: () async {
                             if (_interstitialAd == null) {
-                              print(
-                                  'Warning: attempt to show interstitial before loaded.');
                               return;
                             }
                             _interstitialAd!.fullScreenContentCallback =
@@ -203,13 +201,10 @@ class _SettingsState extends State<Settings> {
                               onAdShowedFullScreenContent: (ad) =>
                                   print('$ad onAdShowedFullScreenContent.'),
                               onAdDismissedFullScreenContent: (ad) {
-                                print('$ad onAdDismissedFullScreenContent.');
                                 ad.dispose();
                                 _createInterstitialAd();
                               },
                               onAdFailedToShowFullScreenContent: (ad, error) {
-                                print(
-                                    '$ad onAdFailedToShowFullScreenContent: $error');
                                 ad.dispose();
                                 _createInterstitialAd();
                               },
