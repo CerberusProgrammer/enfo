@@ -2,55 +2,52 @@ import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:enfo/theme.dart';
-import 'package:enfo/web/home_web.dart';
-import 'package:enfo/web/introduction_web.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'home.dart';
 
 void main() async {
-  if (!kIsWeb) {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-    final savedThemeMode = await AdaptiveTheme.getThemeMode();
-    final prefs = await SharedPreferences.getInstance();
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  final prefs = await SharedPreferences.getInstance();
 
-    Themes.defaultIndex = prefs.getInt('defaultIndex') ?? 10;
-    bool presentation = prefs.getBool('presentation') ?? true;
+  Themes.defaultIndex = prefs.getInt('defaultIndex') ?? 10;
+  bool presentation = prefs.getBool('presentation') ?? true;
 
-    if (Platform.isAndroid) {
-      MobileAds.instance.initialize();
-    }
+  if (Platform.isAndroid) {
+    MobileAds.instance.initialize();
+  }
 
-    runApp(
-      Main(
-        savedThemeMode: savedThemeMode,
-        presentation: presentation,
-      ),
+  runApp(
+    Main(
+      savedThemeMode: savedThemeMode,
+      presentation: true,
+    ),
+  );
+
+  if (Platform.isWindows) {
+    await windowManager.ensureInitialized();
+
+    const WindowOptions windowOptions = WindowOptions(
+      size: Size(800, 800),
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      center: true,
+      title: 'Enfo',
+      titleBarStyle: TitleBarStyle.hidden,
+      minimumSize: Size(310, 280),
     );
 
-    if (Platform.isWindows) {
-      await windowManager.ensureInitialized();
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+    });
+  }
 
-      const WindowOptions windowOptions = WindowOptions(
-        size: Size(800, 800),
-        backgroundColor: Colors.transparent,
-        skipTaskbar: false,
-        center: true,
-        title: 'Enfo',
-        titleBarStyle: TitleBarStyle.hidden,
-        minimumSize: Size(310, 280),
-      );
-
-      windowManager.waitUntilReadyToShow(windowOptions, () async {
-        await windowManager.show();
-      });
-    }
-  } else {
+  /*
     WidgetsFlutterBinding.ensureInitialized();
 
     final savedThemeMode = await AdaptiveTheme.getThemeMode();
@@ -80,7 +77,7 @@ void main() async {
             home: presentation ? const IntroductionWeb() : const HomeWeb(),
           );
         }));
-  }
+        */
 }
 
 class Main extends StatefulWidget {

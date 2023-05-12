@@ -57,6 +57,7 @@ class _Home extends State<Home> {
               mode: _mode,
               time: time,
               notification: notifications,
+              presentation: widget.presentation,
             ),
       bottomNavigationBar: widget.presentation
           ? null
