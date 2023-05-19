@@ -8,8 +8,6 @@
         </intent>
     </queries>
 
-
-
    <application
         android:label="enfo"
         android:name="${applicationName}"
