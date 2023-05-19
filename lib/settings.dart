@@ -53,11 +53,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-<<<<<<< HEAD
       height: 175,
-=======
-      height: 160,
->>>>>>> 0723c19ae098da8d5ea6c5207f14bcc3278b6e3f
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
