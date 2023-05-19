@@ -194,10 +194,17 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_local_notifications
+<<<<<<< HEAD
       sha256: "20c92629902b125cb624efdbacbbe98806b3c0b01adb3d84d1c72198b3eafb1a"
       url: "https://pub.dev"
     source: hosted
     version: "14.0.1"
+=======
+      sha256: ee6ee56855aa920899b68586b538474d086c149932220b47b92502cbfb5ba5e5
+      url: "https://pub.dev"
+    source: hosted
+    version: "14.0.0+2"
+>>>>>>> 0723c19ae098da8d5ea6c5207f14bcc3278b6e3f
   flutter_local_notifications_linux:
     dependency: transitive
     description:
@@ -553,10 +560,17 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
+<<<<<<< HEAD
       sha256: "1a5848f598acc5b7d8f7c18b8cb834ab667e59a13edc3c93e9d09cf38cc6bc87"
       url: "https://pub.dev"
     source: hosted
     version: "6.0.34"
+=======
+      sha256: "7aac14be5f4731b923cc697ae2d42043945076cd0dbb8806baecc92c1dc88891"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.33"
+>>>>>>> 0723c19ae098da8d5ea6c5207f14bcc3278b6e3f
   url_launcher_ios:
     dependency: transitive
     description:

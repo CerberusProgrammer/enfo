@@ -53,7 +53,11 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+<<<<<<< HEAD
       height: 175,
+=======
+      height: 160,
+>>>>>>> 0723c19ae098da8d5ea6c5207f14bcc3278b6e3f
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -194,8 +198,6 @@ class _SettingsState extends State<Settings> {
                           icon: const Icon(Icons.attach_money),
                           onPressed: () async {
                             if (_interstitialAd == null) {
-                              print(
-                                  'Warning: attempt to show interstitial before loaded.');
                               return;
                             }
                             _interstitialAd!.fullScreenContentCallback =
@@ -203,13 +205,10 @@ class _SettingsState extends State<Settings> {
                               onAdShowedFullScreenContent: (ad) =>
                                   print('$ad onAdShowedFullScreenContent.'),
                               onAdDismissedFullScreenContent: (ad) {
-                                print('$ad onAdDismissedFullScreenContent.');
                                 ad.dispose();
                                 _createInterstitialAd();
                               },
                               onAdFailedToShowFullScreenContent: (ad, error) {
-                                print(
-                                    '$ad onAdFailedToShowFullScreenContent: $error');
                                 ad.dispose();
                                 _createInterstitialAd();
                               },

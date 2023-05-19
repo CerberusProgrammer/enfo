@@ -11,6 +11,7 @@ class Clock extends StatefulWidget {
   final int time;
   final bool notification;
   final bool mode;
+  final bool presentation;
 
   const Clock({
     super.key,
@@ -18,6 +19,7 @@ class Clock extends StatefulWidget {
     required this.time,
     required this.notification,
     required this.mode,
+    required this.presentation,
   });
 
   @override
@@ -134,6 +136,10 @@ class _ClockState extends State<Clock> {
                 },
                 onChange: (String timeStamp) {},
                 timeFormatterFunction: (defaultFormatterFunction, duration) {
+                  if (widget.presentation) {
+                    return 'Start';
+                  }
+
                   if (widget.controller.isPaused) {
                     return 'Paused';
                   }
@@ -179,9 +185,6 @@ class _ClockState extends State<Clock> {
       importance: Importance.max,
       priority: Priority.high,
       showWhen: false,
-      sound: RawResourceAndroidNotificationSound(
-        'minimal_alarm',
-      ),
     );
 
     const NotificationDetails platformChannelSpecifics = NotificationDetails(

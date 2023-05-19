@@ -57,6 +57,7 @@ class _Home extends State<Home> {
               mode: _mode,
               time: time,
               notification: notifications,
+              presentation: widget.presentation,
             ),
       bottomNavigationBar: widget.presentation
           ? null
@@ -86,45 +87,57 @@ class _Home extends State<Home> {
                       Icons.settings,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      if (notifications) {
-                        setState(() {
-                          notifications = false;
-                        });
-                      } else {
-                        setState(() {
-                          notifications = true;
-                        });
-                      }
-                    },
-                    icon: Icon(
-                      notifications
-                          ? Icons.notifications
-                          : Icons.notifications_off_outlined,
+                  Tooltip(
+                    message: notifications
+                        ? 'Turn off notifications'
+                        : 'Turn on notifications',
+                    child: IconButton(
+                      onPressed: () {
+                        if (notifications) {
+                          setState(() {
+                            notifications = false;
+                          });
+                        } else {
+                          setState(() {
+                            notifications = true;
+                          });
+                        }
+                      },
+                      icon: Icon(
+                        notifications
+                            ? Icons.notifications
+                            : Icons.notifications_off_outlined,
+                      ),
                     ),
                   ),
                   Platform.isWindows
-                      ? IconButton(
-                          onPressed: () async {
-                            if (_pinned) {
-                              setState(() {
-                                _pinned = false;
-                              });
-                              await windowManager.setAlwaysOnTop(false);
-                            } else {
-                              setState(() {
-                                _pinned = true;
-                              });
-                              await windowManager.setAlwaysOnTop(true);
-                            }
-                          },
-                          color: _pinned
-                              ? Theme.of(context).colorScheme.primary
-                              : null,
-                          icon: Icon(
-                            _pinned ? Icons.push_pin : Icons.push_pin_outlined,
-                            size: 24,
+                      ? Tooltip(
+                          message: _pinned
+                              ? 'Disable to the top of the window.'
+                              : 'Enable to the top of the window.',
+                          child: IconButton(
+                            onPressed: () async {
+                              if (_pinned) {
+                                setState(() {
+                                  _pinned = false;
+                                });
+                                await windowManager.setAlwaysOnTop(false);
+                              } else {
+                                setState(() {
+                                  _pinned = true;
+                                });
+                                await windowManager.setAlwaysOnTop(true);
+                              }
+                            },
+                            color: _pinned
+                                ? Theme.of(context).colorScheme.primary
+                                : null,
+                            icon: Icon(
+                              _pinned
+                                  ? Icons.push_pin
+                                  : Icons.push_pin_outlined,
+                              size: 24,
+                            ),
                           ),
                         )
                       : const Text(''),

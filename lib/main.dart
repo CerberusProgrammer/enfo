@@ -33,7 +33,7 @@ void main() async {
     await windowManager.ensureInitialized();
 
     const WindowOptions windowOptions = WindowOptions(
-      size: Size(800, 800),
+      size: Size(450, 450),
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
       center: true,
@@ -80,7 +80,7 @@ class _MainState extends State<Main> {
         builder: (theme, darkTheme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: "enfo",
+            title: "Enfo",
             theme: theme,
             darkTheme: darkTheme,
             home: Home(
