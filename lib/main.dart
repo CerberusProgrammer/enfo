@@ -79,7 +79,6 @@ class _MainState extends State<Main> {
         initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
         builder: (theme, darkTheme) {
           return MaterialApp(
-            debugShowCheckedModeBanner: false,
             title: "Enfo",
             theme: theme,
             darkTheme: darkTheme,

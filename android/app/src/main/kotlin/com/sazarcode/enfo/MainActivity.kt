@@ -1,4 +1,4 @@
-package com.sazarcode.enfo.Application
+package com.sazarcode.enfo
 
 import io.flutter.embedding.android.FlutterActivity
 
