@@ -146,6 +146,40 @@ class _HomeWeb extends State<HomeWeb> {
                 icon: const Icon(FontAwesomeIcons.github),
               ),
             ),
+            Tooltip(
+              message: 'View on Play Store',
+              child: IconButton(
+                onPressed: () async {
+                  const url =
+                      'https://play.google.com/store/apps/details?id=com.sazarcode.enfo';
+                  final uri = Uri.parse(url);
+
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                icon: const Icon(FontAwesomeIcons.googlePlay),
+              ),
+            ),
+            Tooltip(
+              message: 'Get desktop version',
+              child: IconButton(
+                onPressed: () async {
+                  const url =
+                      'https://github.com/CerberusProgrammer/enfo/releases/download/Windows/enfo_installer.exe';
+                  final uri = Uri.parse(url);
+
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                icon: const Icon(FontAwesomeIcons.windows),
+              ),
+            ),
             const Spacer(),
             Icon(
               _mode ? Icons.title : Icons.access_time,
